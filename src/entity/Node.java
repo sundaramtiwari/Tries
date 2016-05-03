@@ -1,16 +1,11 @@
 package entity;
 
-import util.TrieUtil;
 
 public class Node {
     private Node[] array = new Node[26];
     private boolean isLeaf;
     private boolean processed;
     private int index;
-
-    public void addWord (String word) {
-        TrieUtil.addWordToTrie(word, this);
-    }
 
     public Node() {
     }

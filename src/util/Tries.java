@@ -1,49 +1,60 @@
 package util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
 import entity.Node;
 
-public class TrieUtil {
+public class Tries extends Node {
 
-    public static Map<Character, Integer> charMap = new HashMap<Character, Integer>(26);
+    private Node root;
+    
+    public Tries() {
+        this.root = new Node();
+    }
+    /*public static Map<Character, Integer> charMap = new HashMap<Character, Integer>(26);
 
     static {
         char ch = 'a';
         for (int i = 0; i < 26; i++) {
             charMap.put(ch++, i);
         }
-    }
+    }*/
 
-    public static void addWordToTrie(String word, Node root) {
+    public boolean addWordToTrie(String word) {
         char[] charArr = word.toCharArray();
         Node current = root;
-        for (int i = 0; i < charArr.length; i++) {
-            Node[] array = current.getArray();
-            Integer _index = charMap.get(charArr[i]);
+        boolean added = false;
 
-            // If the node array contains node at this index, increment i counter, update node and proceed.
-            if (array[_index] != null) {
-                current = array[_index];
-                continue;
-            } else {
-                array[_index] = new Node(_index);
-                current = array[_index];
-            }
+        try {
+            for (int i = 0; i < charArr.length; i++) {
+                Node[] array = current.getArray();
+                Integer _index = charArr[i] - 97; // charMap.get(charArr[i]);
 
-            if (i == charArr.length - 1 && !current.isLeaf()) {
-                current.setLeaf(true);
+                // If the node array contains node at this index, increment i counter, update node and proceed.
+                if (array[_index] != null) {
+                    current = array[_index];
+                    continue;
+                } else {
+                    array[_index] = new Node(_index);
+                    current = array[_index];
+                }
+
+                if (i == charArr.length - 1 && !current.isLeaf()) {
+                    current.setLeaf(true);
+                }
             }
+            added = true;
+        } catch (Exception e) {
+            System.err.println("Cannot add word to trie. Exception occured: " + e);
         }
+        return added;
     }
 
-    public static List<String> suggest(String pattern, Node root) {
+    public List<String> suggest(String pattern) {
         List<String> suggestions = new ArrayList<String>();
 
         char[] charArr = pattern.toCharArray();
@@ -51,7 +62,7 @@ public class TrieUtil {
 
         for (int i = 0; i < charArr.length; i++) {
             Node[] array = current.getArray();
-            Integer _index = charMap.get(charArr[i]);
+            Integer _index = charArr[i] - 97; //charMap.get(charArr[i]);
 
             // If the node array contains node at this index, increment i counter, update node and proceed.
             if (array[_index] != null) {
@@ -63,7 +74,7 @@ public class TrieUtil {
             }
         }
 
-        TrieUtil.getSuggestionsFromNode(pattern, suggestions, current);
+        getSuggestionsFromNode(pattern, suggestions, current);
 
         return suggestions;
     }
@@ -73,7 +84,7 @@ public class TrieUtil {
      * @param suggestions
      * @param current
      */
-    public static void getSuggestionsFromNode(String pattern, List<String> suggestions, Node current) {
+    private void getSuggestionsFromNode(String pattern, List<String> suggestions, Node current) {
         String common = pattern.substring(0, pattern.length()-1);
         StringBuilder sbr = new StringBuilder();
         Set<Node> addedNodes = new HashSet<Node>();
@@ -113,5 +124,13 @@ public class TrieUtil {
                 }
             }
         }
+    }
+
+    public Node getRoot() {
+        return root;
+    }
+
+    public void setRoot(Node root) {
+        this.root = root;
     }
 }
