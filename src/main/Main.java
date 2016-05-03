@@ -1,8 +1,9 @@
 package main;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import util.Tries;
@@ -10,8 +11,9 @@ import util.Tries;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        String fileLoc = "/home/sundaramtiwari/Documents/CodeEval/trieTree.txt";
-        BufferedReader br = new BufferedReader(new FileReader(fileLoc));
+
+        InputStream stream = Main.class.getResourceAsStream("/resources/tries.txt");
+        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
         String[] words = br.readLine().split(", ");
         Tries trie = new Tries();
 
@@ -23,15 +25,25 @@ public class Main {
             }
         }
 
-        /*
-         * TrieUtil.addWordToTrie("unabandon", root); TrieUtil.addWordToTrie("unabandoned", root); TrieUtil.addWordToTrie("unabased", root); TrieUtil.addWordToTrie("unabashed", root);
-         * TrieUtil.addWordToTrie("unabasht", root); TrieUtil.addWordToTrie("unabating", root);
-         */
+        List<String> suggest = trie.suggest("unag");
 
-        List<String> suggest = trie.suggest("unabo");
         for (String str : suggest) {
             System.out.println(str);
         }
+
+        /*BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
+        int lines = Integer.parseInt(buffer.readLine());
+        Tries trie = new Tries();
+        String[] line;
+        
+        for (int i=0; i < lines; i++) {
+            line = buffer.readLine().split(" ");
+            if (line[0].equals("add")) {
+                trie.addWordToTrie(line[1]);
+            } else if (line[0].equals("find")) {
+                System.out.println(trie.suggest(line[1]).size());
+            }
+        }*/
     }
 
 }

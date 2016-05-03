@@ -15,14 +15,6 @@ public class Tries extends Node {
     public Tries() {
         this.root = new Node();
     }
-    /*public static Map<Character, Integer> charMap = new HashMap<Character, Integer>(26);
-
-    static {
-        char ch = 'a';
-        for (int i = 0; i < 26; i++) {
-            charMap.put(ch++, i);
-        }
-    }*/
 
     public boolean addWordToTrie(String word) {
         char[] charArr = word.toCharArray();
@@ -69,8 +61,8 @@ public class Tries extends Node {
                 current = array[_index];
                 continue;
             } else {
-                System.err.println("No match found! Try searching for another pattern.");
-                break;
+                // System.err.println("No match found! Try searching for another pattern.");
+                return suggestions;
             }
         }
 
